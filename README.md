@@ -1,70 +1,201 @@
-# Getting Started with Create React App
+# React Todo App with Filtering and Sorting
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+## Overview
+Create a functional todo application with filtering, sorting, and basic statistics. This project should be completable within 2 hours while still demonstrating important React concepts.
 
-## Available Scripts
+## Requirements
 
-In the project directory, you can run:
+### Core Features
+1. **Todo Management**
+   - Add new todos with a title and priority level (Low, Medium, High)
+   - Mark todos as completed
+   - Delete todos
 
-### `npm start`
+2. **Filtering & Sorting**
+   - Filter todos by status (All, Active, Completed)
+   - Filter todos by priority level
+   - Sort todos by creation date or priority
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
+3. **Statistics Summary**
+   - Display count of total/active/completed todos
+   - Show the highest priority incomplete todo
 
-The page will reload when you make changes.\
-You may also see any lint errors in the console.
+### Technical Requirements
+1. **State Management**
+   - Use React's useState and useEffect hooks
+   - Optionally use useReducer for more complex state logic
 
-### `npm test`
+2. **Component Structure**
+   - Create at least 3 separate components:
+     - TodoForm (for adding new todos)
+     - TodoList (for displaying and managing todos)
+     - TodoStats (for showing statistics)
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+3. **Styling**
+   - Basic responsive design (usable on mobile and desktop)
+   - Visual indication of priority levels (colors, icons, etc.)
 
-### `npm run build`
+## Data Structure
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+Use the following data structure for todos:
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+```javascript
+const initialTodos = [
+  {
+    id: 1,
+    title: "Learn React Hooks",
+    completed: false,
+    priority: "High",
+    createdAt: new Date().toISOString()
+  },
+  {
+    id: 2,
+    title: "Complete practice project",
+    completed: true,
+    priority: "Medium",
+    createdAt: new Date(Date.now() - 86400000).toISOString() // 1 day ago
+  }
+];
+```
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+## Implementation Steps
 
-### `npm run eject`
+1. **Setup Project** (5 minutes)
+   - Create a new React project with Create React App or Vite
 
-**Note: this is a one-way operation. Once you `eject`, you can't go back!**
+2. **Create Components** (45 minutes)
+   - Implement the form for adding todos
+   - Create the todo list with completion toggle and delete functionality
+   - Build the statistics component
 
-If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+3. **Add Filtering & Sorting** (30 minutes)
+   - Implement filter controls
+   - Add sorting functionality
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
+4. **Styling and Polish** (30 minutes)
+   - Style the components
+   - Add responsive design
+   - Implement visual priority indicators
 
-You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
+5. **Testing & Bug Fixes** (10 minutes)
+   - Test all functionality
+   - Fix any issues
 
-## Learn More
+## Bonus Features (If Time Permits)
+- Add local storage persistence
+- Add edit functionality for existing todos
+- Implement keyboard shortcuts
+- Add due dates for todos
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
+## Evaluation Criteria
+- Functionality of all required features
+- Code organization and component structure
+- Proper use of React hooks
+- UI/UX considerations
+- Code readability and best practices
 
-To learn React, check out the [React documentation](https://reactjs.org/).
+## Getting Started
 
-### Code Splitting
+Here's some starter code for the App component:
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
+```jsx
+import { useState, useEffect } from 'react';
+import './App.css';
+import TodoForm from './components/TodoForm';
+import TodoList from './components/TodoList';
+import TodoStats from './components/TodoStats';
 
-### Analyzing the Bundle Size
+function App() {
+  const [todos, setTodos] = useState([]);
+  const [filter, setFilter] = useState('all');
+  const [priorityFilter, setPriorityFilter] = useState('all');
+  const [sortBy, setSortBy] = useState('createdAt');
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
+  // Add todo handler
+  const addTodo = (todo) => {
+    setTodos([...todos, {
+      ...todo,
+      id: Date.now(),
+      completed: false,
+      createdAt: new Date().toISOString()
+    }]);
+  };
 
-### Making a Progressive Web App
+  // Toggle todo completion status
+  const toggleTodo = (id) => {
+    setTodos(todos.map(todo => 
+      todo.id === id ? { ...todo, completed: !todo.completed } : todo
+    ));
+  };
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
+  // Delete todo
+  const deleteTodo = (id) => {
+    setTodos(todos.filter(todo => todo.id !== id));
+  };
 
-### Advanced Configuration
+  // Get filtered and sorted todos
+  const getFilteredTodos = () => {
+    return todos
+      .filter(todo => {
+        // Status filter
+        if (filter === 'active') return !todo.completed;
+        if (filter === 'completed') return todo.completed;
+        return true;
+      })
+      .filter(todo => {
+        // Priority filter
+        if (priorityFilter !== 'all') return todo.priority === priorityFilter;
+        return true;
+      })
+      .sort((a, b) => {
+        // Sorting
+        if (sortBy === 'priority') {
+          const priorityValues = { 'Low': 1, 'Medium': 2, 'High': 3 };
+          return priorityValues[b.priority] - priorityValues[a.priority];
+        }
+        return new Date(b.createdAt) - new Date(a.createdAt);
+      });
+  };
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
+  return (
+    <div className="App">
+      <h1>Todo App</h1>
+      
+      {/* Filter and Sort Controls */}
+      <div className="controls">
+        <select value={filter} onChange={(e) => setFilter(e.target.value)}>
+          <option value="all">All</option>
+          <option value="active">Active</option>
+          <option value="completed">Completed</option>
+        </select>
+        
+        <select value={priorityFilter} onChange={(e) => setPriorityFilter(e.target.value)}>
+          <option value="all">All Priorities</option>
+          <option value="Low">Low</option>
+          <option value="Medium">Medium</option>
+          <option value="High">High</option>
+        </select>
+        
+        <select value={sortBy} onChange={(e) => setSortBy(e.target.value)}>
+          <option value="createdAt">Sort by Date</option>
+          <option value="priority">Sort by Priority</option>
+        </select>
+      </div>
+      
+      <TodoStats todos={todos} />
+      <TodoForm addTodo={addTodo} />
+      <TodoList 
+        todos={getFilteredTodos()} 
+        toggleTodo={toggleTodo} 
+        deleteTodo={deleteTodo} 
+      />
+    </div>
+  );
+}
 
-### Deployment
+export default App;
+```
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
+This starter code demonstrates the core functionality and structure you need to implement. You'll need to create the TodoForm, TodoList, and TodoStats components to complete the assignment.
 
-### `npm run build` fails to minify
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+Good luck!
