@@ -65,15 +65,15 @@ function App() {
   const editTodo = (id, newTitle, newPriority) => {
     dispatch({ type: 'EDIT', payload: { id, title: newTitle, priority: newPriority } });
   };
-  
+
   const toggleTodo = (id) => {
     dispatch({ type: 'TOGGLE', payload: id });
   };
-  
+
   const deleteTodo = (id) => {
     dispatch({ type: 'DELETE', payload: id });
   };
-  
+
   const getFilteredTodos = () => {
     return todos
       .filter(todo => {
