@@ -5,37 +5,33 @@
     justify-content: center;
     align-items: center;
     margin: 20px 0;
-  }
-  
-  .todo-form input[type="text"],
-  .todo-form select,
-  .todo-form button {
+}
+
+.todo-form input[type="text"],
+.todo-form select,
+.todo-form button {
     padding: 10px;
     font-size: 16px;
     border: 1px solid #ccc;
     border-radius: 6px;
     outline: none;
-  }
-  
-  .todo-form button {
+}
+
+.todo-form button {
     background-color: #007bff;
     color: white;
     cursor: pointer;
     border: none;
-  }
-  
-  .todo-form button:hover {
-    background-color: #0056b3;
-  }
+}
 
-  .todo-form input[type="date"] {
+.todo-form button:hover {
+    background-color: #0056b3;
+}
+
+.todo-form input[type="date"] {
     padding: 10px;
     font-size: 16px;
     border: 1px solid #ccc;
     border-radius: 6px;
     outline: none;
-  }
-  
-
-
-  
+}

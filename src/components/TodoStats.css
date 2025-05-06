@@ -10,32 +10,31 @@
     box-shadow: 0 2px 6px rgba(0, 0, 0, 0.05);
     font-size: 16px;
     color: #333;
-  }
-  
-  .todo-stats .priority-title {
+}
+
+.todo-stats .priority-title {
     font-weight: bold;
     color: #007bff;
     margin-bottom: 10px;
     text-align: center;
-  }
-  
-  .todo-stats .totals {
+}
+
+.todo-stats .totals {
     display: flex;
     gap: 35px;
     justify-content: center;
     flex-wrap: wrap;
-  }
-  
-  @media (max-width: 500px) {
+}
+
+@media (max-width: 500px) {
     .todo-stats {
-      font-size: 14px;
-      padding: 16px;
+        font-size: 14px;
+        padding: 16px;
     }
-  
+
     .todo-stats .totals {
-      flex-direction: column;
-      align-items: center;
-      gap: 10px;
+        flex-direction: column;
+        align-items: center;
+        gap: 10px;
     }
-  }
-  
+}
