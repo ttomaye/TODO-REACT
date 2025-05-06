@@ -23,7 +23,12 @@ const todoReducer = (state, action) => {
     case 'EDIT':
       return state.map(todo =>
         todo.id === action.payload.id
-          ? { ...todo, title: action.payload.title, priority: action.payload.priority }
+          ? {
+            ...todo,
+            title: action.payload.title,
+            priority: action.payload.priority,
+            dueDate: action.payload.dueDate,
+          }
           : todo
       );
     case 'DELETE':
@@ -62,8 +67,16 @@ function App() {
     dispatch({ type: 'ADD', payload: todo });
   };
 
-  const editTodo = (id, newTitle, newPriority) => {
-    dispatch({ type: 'EDIT', payload: { id, title: newTitle, priority: newPriority } });
+  const editTodo = (id, newTitle, newPriority, newDueDate) => {
+    dispatch({
+      type: 'EDIT',
+      payload: {
+        id,
+        title: newTitle,
+        priority: newPriority,
+        dueDate: newDueDate,
+      },
+    });
   };
 
   const toggleTodo = (id) => {

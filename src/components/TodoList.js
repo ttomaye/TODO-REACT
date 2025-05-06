@@ -7,16 +7,18 @@ function TodoList({ todos, toggleTodo, deleteTodo, editTodo }) {
     const [editId, setEditId] = useState(null);
     const [editText, setEditText] = useState('');
     const [editPriority, setEditPriority] = useState('Medium');
+    const [editDueDate, setEditDueDate] = useState('');
 
     const startEditing = (todo) => {
         setEditId(todo.id);
         setEditText(todo.title);
         setEditPriority(todo.priority);
+        setEditDueDate(todo.dueDate || '');
     };
 
     const handleEditSave = () => {
         if (editText.trim()) {
-            editTodo(editId, editText, editPriority);
+            editTodo(editId, editText, editPriority, editDueDate);
         }
         setEditId(null);
         setEditText('');
@@ -54,6 +56,13 @@ function TodoList({ todos, toggleTodo, deleteTodo, editTodo }) {
                                 className="edit-input"
                                 autoFocus
                             />
+                            <input
+                                type="date"
+                                value={editDueDate}
+                                onChange={(e) => setEditDueDate(e.target.value)}
+                                min={new Date().toISOString().split("T")[0]}
+                                className="edit-due-date"
+                            />
                             <select
                                 value={editPriority}
                                 onChange={(e) => setEditPriority(e.target.value)}
@@ -85,7 +94,11 @@ function TodoList({ todos, toggleTodo, deleteTodo, editTodo }) {
                             <small>[{todo.priority}]</small>
 
                             <div className="todo-meta">
-                                {todo.dueDate && <div className="due-date">Due: {todo.dueDate}</div>}
+                                {todo.dueDate && (
+                                    <div className="due-date">
+                                        Due: {new Date(todo.dueDate).toLocaleDateString('en-US')}
+                                    </div>
+                                )}
                                 <div className="created-at">
                                     Created: {new Date(todo.createdAt).toLocaleString()}
                                 </div>

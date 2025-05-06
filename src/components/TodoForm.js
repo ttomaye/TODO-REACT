@@ -26,11 +26,15 @@ function TodoForm({ addTodo }) {
                 placeholder="Add a new todo"
             />
 
-            <input
-                type="date"
-                value={dueDate}
-                onChange={e => setDueDate(e.target.value)}
-            />
+            <div className="input-group">
+                <input
+                    type="date"
+                    id="dueDate"
+                    value={dueDate}
+                    onChange={e => setDueDate(e.target.value)}
+                    min={new Date().toISOString().split("T")[0]}
+                />
+            </div>
 
             <select value={priority} onChange={e => setPriority(e.target.value)}>
                 <option value="Low">Low</option>
